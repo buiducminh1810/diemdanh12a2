@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điểm danh Lớp 12A2</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 5px; }
+        .sub-title { text-align: center; color: #5f6368; margin-bottom: 20px; font-style: italic; }
+        
+        .stats-board { background: #e8f0fe; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-left: 6px solid #1a73e8; }
+        .stats-item { font-size: 15px; }
+        .absent-list-area { grid-column: 1 / span 2; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #adc6ff; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; position: sticky; top: 0; padding: 12px; border-bottom: 2px solid #dee2e6; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f1f3f4; }
+        
+        input[type="text"] { width: 95%; padding: 6px; border: 1px solid #dadce0; border-radius: 4px; outline: none; }
+        input[type="text"]:focus { border-color: #1a73e8; box-shadow: 0 0 3px rgba(26,115,232,0.4); }
+        input[type="checkbox"] { transform: scale(1.5); cursor: pointer; }
+        
+        .stt-col { width: 40px; text-align: center; color: #888; }
+        .check-col { width: 60px; text-align: center; }
+        
+        #resultName { color: #d93025; font-weight: bold; }
+        .present-count { color: #188038; font-weight: bold; }
+        .absent-count { color: #d93025; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>BẢNG ĐIỂM DANH LỚP 12A2</h2>
+    <p class="sub-title">Cập nhật danh sách 45 thành viên cố định</p>
+
+    <div class="stats-board">
+        <div class="stats-item">Tổng số: <strong>45</strong></div>
+        <div class="stats-item">Có mặt: <span id="countPresent" class="present-count">45</span></div>
+        <div class="stats-item">Vắng mặt: <span id="countAbsent" class="absent-count">0</span></div>
+        <div class="absent-list-area">
+            Tên vắng: <span id="resultName">Không có</span>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="stt-col">STT</th>
+                <th>Họ và Tên</th>
+                <th class="check-col">Vắng</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    const danhSachLop = [
+        "Thùy An", "Phương Anh", "Thị Giàu", "Ngọc Hân", "Ngọc Hoa",
+"Trà My", "Hà My", "Ngọc Mỹ", "Ngọc Ngân", "Kim Ngân", 
+        "Tô Ngân", "Thanh Ngọc", "Uyên Nhi", "Uyển Nhi", "Ngọc Nhi", 
+        "Trần Nhi", "Tuyết Nhung", "Như Quỳnh", "Diệu Thảo", "Hồng Thoa", 
+        "Hoài Thương", "Phương Thủy", "Thảo Trang", "Phương Vi", "Như Ý", 
+        "Tiểu Yến", "Thiên Ân", "Quốc Anh", "Hải Đăng", "Hoàng Được", 
+        "Chí Hào", "Thế Huy", "Hoàng Huy", "Nhật Huy", "Bảo Khang", 
+        "Anh Khoa", "Phước Lộc", "Xuân Mạnh", "Đức Minh", "Hoàng Nhân", 
+        "Hoàng Phúc", "Văn Quang", "Minh Thọ", "Minh Trí", "Hữu Vinh"
+    ];
+
+    const tbody = document.getElementById('studentTable');
+
+    // Khởi tạo bảng
+    danhSachLop.forEach((name, index) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="stt-col">${index + 1}</td>
+            <td><input type="text" value="${name}" class="student-name"></td>
+            <td class="check-col"><input type="checkbox" class="absent-check" onchange="updateStats()"></td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Hàm tính toán tự động
+    function updateStats() {
+        const names = document.querySelectorAll('.student-name');
+        const checks = document.querySelectorAll('.absent-check');
+        
+        let absentNames = [];
+
+        checks.forEach((check, index) => {
+            if (check.checked) {
+                absentNames.push(names[index].value);
+            }
+        });
+
+        const absentCount = absentNames.length;
+        document.getElementById('countAbsent').innerText = absentCount;
+        document.getElementById('countPresent').innerText = 45 - absentCount;
+        document.getElementById('resultName').innerText = absentNames.length > 0 ? absentNames.join(', ') : "Không có";
+    }
+</script>
+
+</body>
+</html>
